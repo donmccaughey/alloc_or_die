@@ -58,6 +58,17 @@ call `em_expect_alloc_count_zero()` before your program exits.
       return EXIT_SUCCESS;
     }
 
+If the count of EarMark allocation calls match the count of `em_free()` calls,
+`em_expect_alloc_count_zero()` is silent; otherwise, 
+`em_expect_alloc_count_zero()` prints a warning to `stderr` with the allocation
+count, like this:
+
+    WARNING: 1 memory allocation not freed.
+
+Note that a _negative_ allocation count usually indicates calls to `em_free()` 
+were made for memory allocated with plain old `malloc()` or one if its
+relatives.
+
 There's no build system yet, but EarMark consists of single header and `.c` 
 file, so it's easy to drop into a project.
 
@@ -65,17 +76,19 @@ file, so it's easy to drop into a project.
 Rationale: Fail Fast
 --------------------
 
-Memory allocation can fail. Under some circumstances, such as when attempting 
-to allocate a large memory block for processing a media file, the possibility 
-of failure is expected, and the program can handle the failure in a safe and 
-rational fashion and continue running.
+Memory allocation can fail. Under some circumstances (e.g allocating large 
+memory blocks for processing a media file), the possibility of failure is 
+expected and dealing with failure is straight-forward.
 
-In most other circumstances, programs are allocating many small blocks of 
+In most other circumstances, programs are allocating many small blocks of
 memory as part of more complex operations. A failure of one of these routine 
-small allocations indicates that the program or the system is in a bad state. 
+small allocations usually indicates that the program or the system is in a bad 
+state (e.g. allocations are happening in an infinite loop or virtual memory is 
+exhausted). Recovering from this type of failure state is tricky at best and 
+may not be possible.
 
 Writing code that is robust in the face of memory allocation failure has a real
-cost in terms of development time and code complexity, and it's difficult to 
-test thoroughly. For many programs, it makes more sense to treat the failure
-of a routine small allocation as an unrecoverable error.
+cost in terms of development time and code complexity, and is difficult to test 
+thoroughly. For many programs, it makes more sense to treat the failure of a 
+routine small allocation as an unrecoverable error.
 
