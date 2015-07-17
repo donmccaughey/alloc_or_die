@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4FF4C6A19A4144E007DEC78 /* earmark.h in Headers */ = {isa = PBXBuildFile; fileRef = D4FF4C6919A4144E007DEC78 /* earmark.h */; };
-		D4FF4C6C19A41458007DEC78 /* earmark.c in Sources */ = {isa = PBXBuildFile; fileRef = D4FF4C6B19A41458007DEC78 /* earmark.c */; };
+		D4FF4C6A19A4144E007DEC78 /* alloc_or_die.h in Headers */ = {isa = PBXBuildFile; fileRef = D4FF4C6919A4144E007DEC78 /* alloc_or_die.h */; };
+		D4FF4C6C19A41458007DEC78 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4FF4C6B19A41458007DEC78 /* alloc_or_die.c */; };
 		D4FF4C7E19A4187D007DEC78 /* goodtest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4FF4C7D19A4187D007DEC78 /* goodtest.c */; };
-		D4FF4C8119A41981007DEC78 /* libearmark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49192C819A412A9008F9E8E /* libearmark.a */; };
-		D4FF4C9319A419E0007DEC78 /* libearmark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49192C819A412A9008F9E8E /* libearmark.a */; };
+		D4FF4C8119A41981007DEC78 /* liballoc_or_die.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49192C819A412A9008F9E8E /* liballoc_or_die.a */; };
+		D4FF4C9319A419E0007DEC78 /* liballoc_or_die.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49192C819A412A9008F9E8E /* liballoc_or_die.a */; };
 		D4FF4C9619A41A35007DEC78 /* badtest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4FF4C9419A419F1007DEC78 /* badtest.c */; };
 /* End PBXBuildFile section */
 
@@ -54,11 +54,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D49192C819A412A9008F9E8E /* libearmark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libearmark.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D49192C819A412A9008F9E8E /* liballoc_or_die.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liballoc_or_die.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D49192CD19A412CD008F9E8E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D49192CE19A412CD008F9E8E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		D4FF4C6919A4144E007DEC78 /* earmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = earmark.h; sourceTree = "<group>"; };
-		D4FF4C6B19A41458007DEC78 /* earmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = earmark.c; sourceTree = "<group>"; };
+		D4FF4C6919A4144E007DEC78 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
+		D4FF4C6B19A41458007DEC78 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4FF4C7119A4182D007DEC78 /* goodtest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = goodtest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4FF4C7D19A4187D007DEC78 /* goodtest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = goodtest.c; sourceTree = "<group>"; };
 		D4FF4C8819A419D7007DEC78 /* badtest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = badtest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FF4C8119A41981007DEC78 /* libearmark.a in Frameworks */,
+				D4FF4C8119A41981007DEC78 /* liballoc_or_die.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FF4C9319A419E0007DEC78 /* libearmark.a in Frameworks */,
+				D4FF4C9319A419E0007DEC78 /* liballoc_or_die.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +95,8 @@
 		D491929119A41216008F9E8E = {
 			isa = PBXGroup;
 			children = (
-				D4FF4C6919A4144E007DEC78 /* earmark.h */,
-				D4FF4C6B19A41458007DEC78 /* earmark.c */,
+				D4FF4C6919A4144E007DEC78 /* alloc_or_die.h */,
+				D4FF4C6B19A41458007DEC78 /* alloc_or_die.c */,
 				D49192CD19A412CD008F9E8E /* LICENSE */,
 				D49192CE19A412CD008F9E8E /* README.md */,
 				D4FF4C7C19A41870007DEC78 /* tests */,
@@ -107,7 +107,7 @@
 		D491929B19A41216008F9E8E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D49192C819A412A9008F9E8E /* libearmark.a */,
+				D49192C819A412A9008F9E8E /* liballoc_or_die.a */,
 				D4FF4C7119A4182D007DEC78 /* goodtest */,
 				D4FF4C8819A419D7007DEC78 /* badtest */,
 			);
@@ -130,16 +130,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FF4C6A19A4144E007DEC78 /* earmark.h in Headers */,
+				D4FF4C6A19A4144E007DEC78 /* alloc_or_die.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D49192C719A412A9008F9E8E /* earmark */ = {
+		D49192C719A412A9008F9E8E /* alloc_or_die */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D49192C919A412A9008F9E8E /* Build configuration list for PBXNativeTarget "earmark" */;
+			buildConfigurationList = D49192C919A412A9008F9E8E /* Build configuration list for PBXNativeTarget "alloc_or_die" */;
 			buildPhases = (
 				D49192C419A412A9008F9E8E /* Sources */,
 				D49192C519A412A9008F9E8E /* Frameworks */,
@@ -149,9 +149,9 @@
 			);
 			dependencies = (
 			);
-			name = earmark;
+			name = alloc_or_die;
 			productName = earmark;
-			productReference = D49192C819A412A9008F9E8E /* libearmark.a */;
+			productReference = D49192C819A412A9008F9E8E /* liballoc_or_die.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		D4FF4C7019A4182D007DEC78 /* goodtest */ = {
@@ -196,10 +196,10 @@
 		D491929219A41216008F9E8E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Able Pear Software";
 			};
-			buildConfigurationList = D491929519A41216008F9E8E /* Build configuration list for PBXProject "EarMark" */;
+			buildConfigurationList = D491929519A41216008F9E8E /* Build configuration list for PBXProject "alloc_or_die" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -211,7 +211,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D49192C719A412A9008F9E8E /* earmark */,
+				D49192C719A412A9008F9E8E /* alloc_or_die */,
 				D4FF4C7019A4182D007DEC78 /* goodtest */,
 				D4FF4C8719A419D7007DEC78 /* badtest */,
 			);
@@ -223,7 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FF4C6C19A41458007DEC78 /* earmark.c in Sources */,
+				D4FF4C6C19A41458007DEC78 /* alloc_or_die.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,12 +248,12 @@
 /* Begin PBXTargetDependency section */
 		D4FF4C8019A4197D007DEC78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D49192C719A412A9008F9E8E /* earmark */;
+			target = D49192C719A412A9008F9E8E /* alloc_or_die */;
 			targetProxy = D4FF4C7F19A4197D007DEC78 /* PBXContainerItemProxy */;
 		};
 		D4FF4C9219A419DC007DEC78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D49192C719A412A9008F9E8E /* earmark */;
+			target = D49192C719A412A9008F9E8E /* alloc_or_die */;
 			targetProxy = D4FF4C9119A419DC007DEC78 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -276,7 +276,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c89;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -316,7 +316,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c89;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -332,13 +332,14 @@
 		D49192CA19A412A9008F9E8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c89;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				OTHER_CFLAGS = "-DEM_COUNT_ALLOCS";
+				OTHER_CFLAGS = "-DCOUNT_ALLOCS_OR_DIE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -346,9 +347,10 @@
 		D49192CB19A412A9008F9E8E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c89;
-				OTHER_CFLAGS = "-DEM_COUNT_ALLOCS";
+				OTHER_CFLAGS = "-DCOUNT_ALLOCS_OR_DIE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -420,7 +422,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D491929519A41216008F9E8E /* Build configuration list for PBXProject "EarMark" */ = {
+		D491929519A41216008F9E8E /* Build configuration list for PBXProject "alloc_or_die" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D49192BC19A41216008F9E8E /* Debug */,
@@ -429,7 +431,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D49192C919A412A9008F9E8E /* Build configuration list for PBXNativeTarget "earmark" */ = {
+		D49192C919A412A9008F9E8E /* Build configuration list for PBXNativeTarget "alloc_or_die" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D49192CA19A412A9008F9E8E /* Debug */,
@@ -445,6 +447,7 @@
 				D4FF4C7919A4182D007DEC78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4FF4C8E19A419D7007DEC78 /* Build configuration list for PBXNativeTarget "badtest" */ = {
 			isa = XCConfigurationList;
@@ -453,6 +456,7 @@
 				D4FF4C9019A419D7007DEC78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

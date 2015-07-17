@@ -1,4 +1,4 @@
-/* EarMark. https://github.com/AblePear/EarMark
+/* alloc_or_die. https://github.com/AblePear/alloc_or_die
  Copyright (c) 2014, Able Pear Software. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-#include "earmark.h"
+#include "alloc_or_die.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #define SQRT_SIZE_MAX_PLUS_1 (1UL << (sizeof(size_t) * 4))
 
 
-#ifdef EM_COUNT_ALLOCS
+#ifdef COUNT_ALLOCS_OR_DIE
 
 static int alloc_count = 0;
 
@@ -91,7 +91,7 @@ fail_and_exit(void)
 
 
 void *
-em_calloc(size_t count, size_t element_size)
+calloc_or_die(size_t count, size_t element_size)
 {
   void *memory = calloc(count, element_size);
   if ( ! memory) fail_and_exit();
@@ -101,7 +101,7 @@ em_calloc(size_t count, size_t element_size)
 
 
 void *
-em_malloc(size_t size)
+malloc_or_die(size_t size)
 {
   void *memory = malloc(size);
   if ( ! memory) fail_and_exit();
@@ -111,24 +111,24 @@ em_malloc(size_t size)
 
 
 void *
-em_arraydup(void const *memory, size_t count, size_t element_size)
+arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
   size_t size = array_size(count, element_size);
-  return em_memdup(memory, size);
+  return memdup_or_die(memory, size);
 }
 
 
 void *
-em_memdup(void const *memory, size_t size)
+memdup_or_die(void const *memory, size_t size)
 {
-  void *dupe = em_malloc(size);
+  void *dupe = malloc_or_die(size);
   memcpy(dupe, memory, size);
   return dupe;
 }
 
 
 void *
-em_realloc(void *memory, size_t size)
+realloc_or_die(void *memory, size_t size)
 {
   void *new_memory = realloc(memory, size);
   if ( ! new_memory) fail_and_exit();
@@ -138,15 +138,15 @@ em_realloc(void *memory, size_t size)
 
 
 void *
-em_reallocarray(void *memory, size_t count, size_t element_size)
+reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
   size_t size = array_size(count, element_size);
-  return em_realloc(memory, size);
+  return realloc_or_die(memory, size);
 }
 
 
 char *
-em_strdup(char const *string)
+strdup_or_die(char const *string)
 {
   char *dupe = strdup(string);
   if ( ! dupe) fail_and_exit();
@@ -156,18 +156,18 @@ em_strdup(char const *string)
 
 
 int
-em_asprintf(char **string, char const *format, ...)
+asprintf_or_die(char **string, char const *format, ...)
 {
   va_list arguments;
   va_start(arguments, format);
-  int result = em_vasprintf(string, format, arguments);
+  int result = vasprintf_or_die(string, format, arguments);
   va_end(arguments);
   return result;
 }
 
 
 int
-em_vasprintf(char **string, const char *format, va_list arguments)
+vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
   int result = vasprintf(string, format, arguments);
   if (-1 == result) fail_and_exit();
@@ -177,7 +177,7 @@ em_vasprintf(char **string, const char *format, va_list arguments)
 
 
 void
-em_free(void *memory)
+free_or_die(void *memory)
 {
   free(memory);
   if (memory) DECREMENT_ALLOC_COUNT();
@@ -185,7 +185,7 @@ em_free(void *memory)
 
 
 void
-em_expect_alloc_count_zero(void)
+expect_alloc_count_zero_or_die(void)
 {
   EXPECT_ALLOC_COUNT_ZERO();
 }

@@ -1,6 +1,7 @@
-#include <earmark.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "alloc_or_die.h"
 
 
 int
@@ -8,17 +9,17 @@ main(int argc, char *argv[])
 {
   char *name;
   if (argc > 1) {
-    name = em_strdup(argv[1]);
+    name = strdup_or_die(argv[1]);
   } else {
-    name = em_strdup("world");
+    name = strdup_or_die("world");
   }
   
   char *message;
-  em_asprintf(&message, "Goodbye %s!", name);
+  asprintf_or_die(&message, "Goodbye %s!", name);
   
   printf("%s\n", message);
-  em_free(message);
+  free_or_die(message);
   
-  em_expect_alloc_count_zero();
+  expect_alloc_count_zero_or_die();
   return EXIT_SUCCESS;
 }

@@ -1,9 +1,9 @@
-EarMark
-=======
+alloc_or_die
+============
 
-A fail-fast wrapper around C library memory allocation functions.
+Fail-fast wrappers around C memory allocation functions.
 
-EarMark performs two functions:
+Alloc_or_die performs two functions:
 
   1.  It checks for memory allocation failure and exits if allocation fails.
   2.  It optionally keeps a tally of memory allocations and warns about leaks.
@@ -11,18 +11,18 @@ EarMark performs two functions:
 
 License
 -------
-EarMark is made available under a BSD-style license; see the LICENSE file for 
+Alloc_or_die is made available under a BSD-style license; see the LICENSE file for 
 details.
 
 
 Usage
 -----
 
-Use `em_malloc()`, `em_free()` and other memory management functions instead of
-the standard library ones.  EarMark wrappers have the same names and 
-signatures, prefixed with `em_`.
+Use `malloc_or_die()`, `free_or_die()` and other memory management functions 
+instead of the standard library ones.  Alloc_or_die wrappers have the same 
+names and signatures, suffixed with `_or_die`.
 
-EarMark has wrappers for the following standard functions:
+Alloc_or_die has wrappers for the following standard functions:
 
   -   `calloc()`
   -   `malloc()`
@@ -32,45 +32,46 @@ EarMark has wrappers for the following standard functions:
   -   `vasprintf()`
   -   `free()`
   
-EarMark also defines the following convenience functions:
+Alloc_or_die also defines the following convenience functions:
 
-  -   `em_arraydup()`: like `strdup()`, makes a copy of an array when you know
-      the count of elements and the size of each element.
-  -   `em_memdup()`: like `strdup()`, makes a copy of memory given a pointer 
-      and a size.
-  -   `em_reallocarray()`: like `reallocarray()` from OpenBSD, calls 
+  -   `arraydup_or_die()`: like `strdup()`, makes a copy of an array when you 
+      know the count of elements and the size of each element.
+  -   `memdup_or_die()`: like `strdup()`, makes a copy of memory given a 
+      pointer and a size.
+  -   `reallocarray_or_die()`: like `reallocarray()` from OpenBSD, calls 
       `realloc()` to resize an array given the count of elements and the size
       of each element; checks the resulting memory size for overflow.
 
-To check for memory leaks, define `EM_COUNT_ALLOCS` when building EarMark and 
-call `em_expect_alloc_count_zero()` before your program exits.
+To check for memory leaks, define `COUNT_ALLOCS_OR_DIE` when building 
+Alloc_or_die and call `expect_alloc_count_zero_or_die()` before your program 
+exits.
 
-    #include <earmark.h>
+    #include <alloc_or_die.h>
 
     int
     main(int argc, char *argv[])
     {
-      char *message = em_strdup("Hello world!");
+      char *message = strdup_or_die("Hello world!");
       // ...
-      em_free(message);
+      free_or_die(message);
       
-      em_expect_alloc_count_zero();
+      expect_alloc_count_zero_or_die();
       return EXIT_SUCCESS;
     }
 
-If the count of EarMark allocation calls match the count of `em_free()` calls,
-`em_expect_alloc_count_zero()` is silent; otherwise, 
-`em_expect_alloc_count_zero()` prints a warning to `stderr` with the allocation
-count, like this:
+If the count of alloc_or_die allocation calls match the count of 
+`free_or_die()` calls, `expect_alloc_count_zero_or_die()` is silent; otherwise, 
+`expect_alloc_count_zero_or_die()` prints a warning to `stderr` with the 
+allocation count, like this:
 
     WARNING: 1 memory allocation not freed.
 
-Note that a _negative_ allocation count usually indicates calls to `em_free()` 
-were made for memory allocated with plain old `malloc()` or one if its
-relatives.
+Note that a _negative_ allocation count usually indicates calls to 
+`free_or_die()` were made for memory allocated with plain old `malloc()` or one 
+of its relatives.
 
-There's no build system yet, but EarMark consists of single header and `.c` 
-file, so it's easy to drop into a project.
+There's no build system yet, but Alloc_or_die consists of single header and 
+`.c` file, so it's easy to drop into a project.
 
 
 Rationale: Fail Fast

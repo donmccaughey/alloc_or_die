@@ -1,4 +1,4 @@
-/* EarMark. https://github.com/AblePear/EarMark
+/* alloc_or_die. https://github.com/AblePear/alloc_or_die
  Copyright (c) 2014, Able Pear Software. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -22,8 +22,8 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-#ifndef EARMARK_EARMARK_H_INCLUDED
-#define EARMARK_EARMARK_H_INCLUDED
+#ifndef ALLOC_OR_DIE_H_INCLUDED
+#define ALLOC_OR_DIE_H_INCLUDED
 
 
 #include <stdarg.h>
@@ -31,37 +31,37 @@
 
 
 void *
-em_calloc(size_t count, size_t element_size);
+calloc_or_die(size_t count, size_t element_size);
 
 void *
-em_malloc(size_t size);
+malloc_or_die(size_t size);
 
 void *
-em_arraydup(void const *memory, size_t count, size_t element_size);
+arraydup_or_die(void const *memory, size_t count, size_t element_size);
 
 void *
-em_memdup(void const *memory, size_t size);
+memdup_or_die(void const *memory, size_t size);
 
 void *
-em_realloc(void *memory, size_t size);
+realloc_or_die(void *memory, size_t size);
 
 void *
-em_reallocarray(void *memory, size_t count, size_t element_size);
+reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
 char *
-em_strdup(char const *string);
+strdup_or_die(char const *string);
 
 int
-em_asprintf(char **string, char const *format, ...);
+asprintf_or_die(char **string, char const *format, ...);
 
 int
-em_vasprintf(char **string, const char *format, va_list arguments);
+vasprintf_or_die(char **string, const char *format, va_list arguments);
 
 void
-em_free(void *memory);
+free_or_die(void *memory);
 
 void
-em_expect_alloc_count_zero(void);
+expect_alloc_count_zero_or_die(void);
 
 
 #endif
