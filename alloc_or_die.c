@@ -91,33 +91,10 @@ print_error_and_die(void)
 
 
 void *
-calloc_or_die(size_t count, size_t element_size)
-{
-  return not_null_or_die(calloc(count, element_size));
-}
-
-
-void *
-malloc_or_die(size_t size)
-{
-  return not_null_or_die(malloc(size));
-}
-
-
-void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
   size_t size = array_size_or_die(count, element_size);
   return memdup_or_die(memory, size);
-}
-
-
-void *
-memdup_or_die(void const *memory, size_t size)
-{
-  void *dupe = malloc_or_die(size);
-  memcpy(dupe, memory, size);
-  return dupe;
 }
 
 
@@ -136,13 +113,6 @@ reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
   size_t size = array_size_or_die(count, element_size);
   return realloc_or_die(memory, size);
-}
-
-
-char *
-strdup_or_die(char const *string)
-{
-  return not_null_or_die(strdup(string));
 }
 
 
@@ -189,3 +159,16 @@ expect_alloc_count_zero_or_die(void)
 {
   EXPECT_ALLOC_COUNT_ZERO();
 }
+
+
+extern inline void *
+calloc_or_die(size_t count, size_t element_size);
+
+extern inline void *
+malloc_or_die(size_t size);
+
+extern inline void *
+memdup_or_die(void const *memory, size_t size);
+
+extern inline char *
+strdup_or_die(char const *string);

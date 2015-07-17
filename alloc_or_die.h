@@ -27,20 +27,36 @@
 
 
 #include <stdarg.h>
-#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 
+// If `memory' is NULL, exit with an error code, otherwise return `memory'.
 void *
-calloc_or_die(size_t count, size_t element_size);
+not_null_or_die(void *memory);
 
-void *
-malloc_or_die(size_t size);
+inline void *
+calloc_or_die(size_t count, size_t element_size)
+{
+  return not_null_or_die(calloc(count, element_size));
+}
+
+inline void *
+malloc_or_die(size_t size)
+{
+  return not_null_or_die(malloc(size));
+}
 
 void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size);
 
-void *
-memdup_or_die(void const *memory, size_t size);
+inline void *
+memdup_or_die(void const *memory, size_t size)
+{
+  void *dupe = malloc_or_die(size);
+  memcpy(dupe, memory, size);
+  return dupe;
+}
 
 void *
 realloc_or_die(void *memory, size_t size);
@@ -48,17 +64,17 @@ realloc_or_die(void *memory, size_t size);
 void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
-char *
-strdup_or_die(char const *string);
+inline char *
+strdup_or_die(char const *string)
+{
+  return not_null_or_die(strdup(string));
+}
 
 int
 asprintf_or_die(char **string, char const *format, ...);
 
 int
 vasprintf_or_die(char **string, const char *format, va_list arguments);
-
-void *
-not_null_or_die(void *memory);
 
 void
 free_or_die(void *memory);
