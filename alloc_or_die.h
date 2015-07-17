@@ -57,6 +57,9 @@ asprintf_or_die(char **string, char const *format, ...);
 int
 vasprintf_or_die(char **string, const char *format, va_list arguments);
 
+void *
+not_null_or_die(void *memory);
+
 void
 free_or_die(void *memory);
 

@@ -58,19 +58,19 @@ static int alloc_count = 0;
 
 
 static size_t
-array_size(size_t count, size_t element_size);
+array_size_or_die(size_t count, size_t element_size);
 
 static void
-fail_and_exit(void);
+print_error_and_die(void);
 
 
 static size_t
-array_size(size_t count, size_t element_size)
+array_size_or_die(size_t count, size_t element_size)
 {
   if (count >= SQRT_SIZE_MAX_PLUS_1 || element_size >= SQRT_SIZE_MAX_PLUS_1) {
     if (element_size && count > SIZE_MAX / element_size) {
       errno = EOVERFLOW;
-      fail_and_exit();
+      print_error_and_die();
     }
   }
   return count * element_size;
@@ -78,7 +78,7 @@ array_size(size_t count, size_t element_size)
 
 
 static void
-fail_and_exit(void)
+print_error_and_die(void)
 {
   if (errno) {
     perror(NULL);
@@ -93,27 +93,21 @@ fail_and_exit(void)
 void *
 calloc_or_die(size_t count, size_t element_size)
 {
-  void *memory = calloc(count, element_size);
-  if ( ! memory) fail_and_exit();
-  INCREMENT_ALLOC_COUNT();
-  return memory;
+  return not_null_or_die(calloc(count, element_size));
 }
 
 
 void *
 malloc_or_die(size_t size)
 {
-  void *memory = malloc(size);
-  if ( ! memory) fail_and_exit();
-  INCREMENT_ALLOC_COUNT();
-  return memory;
+  return not_null_or_die(malloc(size));
 }
 
 
 void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
-  size_t size = array_size(count, element_size);
+  size_t size = array_size_or_die(count, element_size);
   return memdup_or_die(memory, size);
 }
 
@@ -131,7 +125,7 @@ void *
 realloc_or_die(void *memory, size_t size)
 {
   void *new_memory = realloc(memory, size);
-  if ( ! new_memory) fail_and_exit();
+  if ( ! new_memory) print_error_and_die();
   if ( ! memory) INCREMENT_ALLOC_COUNT();
   return new_memory;
 }
@@ -140,7 +134,7 @@ realloc_or_die(void *memory, size_t size)
 void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
-  size_t size = array_size(count, element_size);
+  size_t size = array_size_or_die(count, element_size);
   return realloc_or_die(memory, size);
 }
 
@@ -148,10 +142,7 @@ reallocarray_or_die(void *memory, size_t count, size_t element_size)
 char *
 strdup_or_die(char const *string)
 {
-  char *dupe = strdup(string);
-  if ( ! dupe) fail_and_exit();
-  INCREMENT_ALLOC_COUNT();
-  return dupe;
+  return not_null_or_die(strdup(string));
 }
 
 
@@ -170,9 +161,18 @@ int
 vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
   int result = vasprintf(string, format, arguments);
-  if (-1 == result) fail_and_exit();
+  if (-1 == result) print_error_and_die();
   INCREMENT_ALLOC_COUNT();
   return result;
+}
+
+
+void *
+not_null_or_die(void *memory)
+{
+  if ( ! memory) print_error_and_die();
+  INCREMENT_ALLOC_COUNT();
+  return memory;
 }
 
 
