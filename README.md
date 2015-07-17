@@ -1,7 +1,7 @@
 alloc_or_die
 ============
 
-Fail-fast wrappers around C memory allocation functions.
+Fail-fast wrappers around C memory allocation functions for C99.
 
 Alloc_or_die performs two functions:
 
@@ -11,8 +11,8 @@ Alloc_or_die performs two functions:
 
 License
 -------
-Alloc_or_die is made available under a BSD-style license; see the LICENSE file for 
-details.
+Alloc_or_die is made available under a BSD-style license; see the LICENSE file 
+for details.
 
 
 Usage
