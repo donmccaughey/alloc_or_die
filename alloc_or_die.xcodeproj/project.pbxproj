@@ -339,7 +339,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				OTHER_CFLAGS = "-DCOUNT_ALLOCS_OR_DIE";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -350,7 +350,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				OTHER_CFLAGS = "-DCOUNT_ALLOCS_OR_DIE";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

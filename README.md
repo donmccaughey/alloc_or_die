@@ -6,7 +6,7 @@ Fail-fast wrappers around C memory allocation functions for C99.
 Alloc_or_die performs two functions:
 
   1.  It checks for memory allocation failure and exits if allocation fails.
-  2.  It optionally keeps a tally of memory allocations and warns about leaks.
+  2.  It keeps a tally of memory allocations and warns about leaks.
 
 
 License
@@ -42,9 +42,8 @@ Alloc_or_die also defines the following convenience functions:
       `realloc()` to resize an array given the count of elements and the size
       of each element; checks the resulting memory size for overflow.
 
-To check for memory leaks, define `COUNT_ALLOCS_OR_DIE` when building 
-Alloc_or_die and call `expect_alloc_count_zero_or_die()` before your program 
-exits.
+To check for memory leaks call `expect_alloc_count_zero_or_die()` before your 
+program exits.
 
     #include <alloc_or_die.h>
 

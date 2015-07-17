@@ -33,6 +33,9 @@
 #include <string.h>
 
 
+extern long alloc_or_die_count;
+
+
 ////////// Building Blocks //////////
 
 // Calculate the array size in bytes.  Set `errno' to EOVERFLOW and call

@@ -33,28 +33,14 @@
 #define SQRT_SIZE_MAX_PLUS_1 (1UL << (sizeof(size_t) * 4))
 
 
-#ifdef COUNT_ALLOCS_OR_DIE
-
-static int alloc_count = 0;
-
-#define INCREMENT_ALLOC_COUNT() (++alloc_count)
-
-#define DECREMENT_ALLOC_COUNT() (--alloc_count)
+long alloc_or_die_count = 0;
 
 #define EXPECT_ALLOC_COUNT_ZERO() \
-    if (alloc_count) { \
-      char const *plural = (1 == alloc_count) ? "" : "s"; \
-      fprintf(stderr, "WARNING: %i memory allocation%s not freed.\n", \
-              alloc_count, plural); \
+    if (alloc_or_die_count) { \
+      char const *plural = (1 == alloc_or_die_count) ? "" : "s"; \
+      fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n", \
+              alloc_or_die_count, plural); \
     }
-
-#else
-
-#define INCREMENT_ALLOC_COUNT()
-#define DECREMENT_ALLOC_COUNT()
-#define EXPECT_ALLOC_COUNT_ZERO()
-
-#endif
 
 
 size_t
@@ -75,7 +61,7 @@ realloc_or_die(void *memory, size_t size)
 {
   void *new_memory = realloc(memory, size);
   if ( ! new_memory) print_error_and_die();
-  if ( ! memory) INCREMENT_ALLOC_COUNT();
+  if ( ! memory) ++alloc_or_die_count;
   return new_memory;
 }
 
@@ -96,7 +82,7 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
   int result = vasprintf(string, format, arguments);
   if (-1 == result) print_error_and_die();
-  INCREMENT_ALLOC_COUNT();
+  ++alloc_or_die_count;
   return result;
 }
 
@@ -105,7 +91,7 @@ void *
 not_null_or_die(void *memory)
 {
   if ( ! memory) print_error_and_die();
-  INCREMENT_ALLOC_COUNT();
+  ++alloc_or_die_count;
   return memory;
 }
 
@@ -114,14 +100,19 @@ void
 free_or_die(void *memory)
 {
   free(memory);
-  if (memory) DECREMENT_ALLOC_COUNT();
+  if (memory) --alloc_or_die_count;
 }
 
 
 void
 expect_alloc_count_zero_or_die(void)
 {
-  EXPECT_ALLOC_COUNT_ZERO();
+  if (alloc_or_die_count) {
+    char const *plural = (1 == alloc_or_die_count) ? "" : "s";
+    fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n",
+            alloc_or_die_count, plural);
+    exit(EXIT_FAILURE);
+  }
 }
 
 
