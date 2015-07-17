@@ -38,11 +38,6 @@ extern long alloc_or_die_count;
 
 ////////// Building Blocks //////////
 
-// Calculate the array size in bytes.  Set `errno' to EOVERFLOW and call
-// `print_error_and_die()' if the calculated array size overflows.
-size_t
-array_size_or_die(size_t count, size_t element_size);
-
 // Prints the current error message and calls `exit()' with the value of
 // `errno'.  If `errno' is zero, sets it to ENOMEM first.
 inline void
@@ -63,35 +58,29 @@ not_null_or_die(void *memory)
   return memory;
 }
 
+// Calculate the array size in bytes.  Set `errno' to EOVERFLOW and call
+// `print_error_and_die()' if the calculated array size overflows.
+size_t
+array_size_or_die(size_t count, size_t element_size);
 
-////////// Allocation Wrappers //////////
 
+////////// Core Allocation Wrappers //////////
+
+// Wrapper for calloc().
 inline void *
 calloc_or_die(size_t count, size_t element_size)
 {
   return not_null_or_die(calloc(count, element_size));
 }
 
+// Wrapper for malloc().
 inline void *
 malloc_or_die(size_t size)
 {
   return not_null_or_die(malloc(size));
 }
 
-inline void *
-memdup_or_die(void const *memory, size_t size)
-{
-  void *dupe = malloc_or_die(size);
-  memcpy(dupe, memory, size);
-  return dupe;
-}
-
-inline void *
-arraydup_or_die(void const *memory, size_t count, size_t element_size)
-{
-  return memdup_or_die(memory, array_size_or_die(count, element_size));
-}
-
+// Wrapper for realloc().
 inline void *
 realloc_or_die(void *memory, size_t size)
 {
@@ -101,21 +90,48 @@ realloc_or_die(void *memory, size_t size)
   return new_memory;
 }
 
+// Reallocate an array.  Set `errno' to EOVERFLOW and call
+// `print_error_and_die()' if the calculated array size overflows.
 inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
   return realloc_or_die(memory, array_size_or_die(count, element_size));
 }
 
+
+////////// Duplication Functions //////////
+
+// Make a copy of `size' bytes of `memory'.
+inline void *
+memdup_or_die(void const *memory, size_t size)
+{
+  void *dupe = malloc_or_die(size);
+  memcpy(dupe, memory, size);
+  return dupe;
+}
+
+// Duplicate `count' elements of an array.
+inline void *
+arraydup_or_die(void const *memory, size_t count, size_t element_size)
+{
+  return memdup_or_die(memory, array_size_or_die(count, element_size));
+}
+
+// Duplicate a zero-terminated string.
 inline char *
 strdup_or_die(char const *string)
 {
   return not_null_or_die(strdup(string));
 }
 
+
+////////// Formatting Functions //////////
+
+// Allocate a new formatted string.
 int
 asprintf_or_die(char **string, char const *format, ...);
 
+// Allocate a new formatted string.
 inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
@@ -128,6 +144,7 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 
 ////////// Allocation Counting //////////
 
+// Wrapper for free().
 inline void
 free_or_die(void *memory)
 {
@@ -135,6 +152,7 @@ free_or_die(void *memory)
   if (memory) --alloc_or_die_count;
 }
 
+// Check that `alloc_or_die_count' is zero or call exit() with EXIT_FAILURE.
 void
 alloc_count_is_zero_or_die(void);
 

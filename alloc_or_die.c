@@ -33,6 +33,18 @@
 long alloc_or_die_count = 0;
 
 
+void
+alloc_count_is_zero_or_die(void)
+{
+  if (alloc_or_die_count) {
+    char const *plural = (1 == alloc_or_die_count) ? "" : "s";
+    fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n",
+            alloc_or_die_count, plural);
+    exit(EXIT_FAILURE);
+  }
+}
+
+
 size_t
 array_size_or_die(size_t count, size_t element_size)
 {
@@ -55,18 +67,6 @@ asprintf_or_die(char **string, char const *format, ...)
   int result = vasprintf_or_die(string, format, arguments);
   va_end(arguments);
   return result;
-}
-
-
-void
-alloc_count_is_zero_or_die(void)
-{
-  if (alloc_or_die_count) {
-    char const *plural = (1 == alloc_or_die_count) ? "" : "s";
-    fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n",
-            alloc_or_die_count, plural);
-    exit(EXIT_FAILURE);
-  }
 }
 
 
