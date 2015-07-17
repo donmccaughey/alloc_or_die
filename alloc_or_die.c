@@ -61,7 +61,7 @@ asprintf_or_die(char **string, char const *format, ...)
 
 
 void
-expect_alloc_count_zero_or_die(void)
+alloc_count_is_zero_or_die(void)
 {
   if (alloc_or_die_count) {
     char const *plural = (1 == alloc_or_die_count) ? "" : "s";

@@ -136,7 +136,7 @@ free_or_die(void *memory)
 }
 
 void
-expect_alloc_count_zero_or_die(void);
+alloc_count_is_zero_or_die(void);
 
 
 #endif

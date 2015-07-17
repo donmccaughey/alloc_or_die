@@ -21,6 +21,6 @@ main(int argc, char *argv[])
   printf("%s\n", message);
   free_or_die(message);
   
-  expect_alloc_count_zero_or_die();
+  alloc_count_is_zero_or_die();
   return EXIT_SUCCESS;
 }
