@@ -30,16 +30,14 @@
 #include <string.h>
 
 
-#define SQRT_SIZE_MAX_PLUS_1 (1UL << (sizeof(size_t) * 4))
-
-
 long alloc_or_die_count = 0;
 
 
 size_t
 array_size_or_die(size_t count, size_t element_size)
 {
-  if (count >= SQRT_SIZE_MAX_PLUS_1 || element_size >= SQRT_SIZE_MAX_PLUS_1) {
+  static size_t const sqrt_size_max_plus_1 = 1UL << (sizeof(size_t) * 4);
+  if (count >= sqrt_size_max_plus_1 || element_size >= sqrt_size_max_plus_1) {
     if (element_size && count > SIZE_MAX / element_size) {
       errno = EOVERFLOW;
       print_error_and_die();
