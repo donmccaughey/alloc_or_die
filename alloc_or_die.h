@@ -43,11 +43,6 @@ extern long alloc_or_die_count;
 size_t
 array_size_or_die(size_t count, size_t element_size);
 
-// If `memory' is NULL, call exit() with an error code, otherwise return
-// `memory'.
-void *
-not_null_or_die(void *memory);
-
 // Prints the current error message and calls `exit()' with the value of
 // `errno'.  If `errno' is zero, sets it to ENOMEM first.
 inline void
@@ -56,6 +51,16 @@ print_error_and_die(void)
   if ( ! errno) errno = ENOMEM;
   perror(NULL);
   exit(errno);
+}
+
+// If `memory' is NULL, calls exit() with an error code, otherwise increments
+// `alloc_or_die_count' and returns `memory'.
+inline void *
+not_null_or_die(void *memory)
+{
+  if ( ! memory) print_error_and_die();
+  ++alloc_or_die_count;
+  return memory;
 }
 
 
@@ -84,18 +89,22 @@ memdup_or_die(void const *memory, size_t size)
 inline void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
-  size_t size = array_size_or_die(count, element_size);
-  return memdup_or_die(memory, size);
+  return memdup_or_die(memory, array_size_or_die(count, element_size));
 }
 
-void *
-realloc_or_die(void *memory, size_t size);
+inline void *
+realloc_or_die(void *memory, size_t size)
+{
+  void *new_memory = realloc(memory, size);
+  if ( ! new_memory) print_error_and_die();
+  if ( ! memory) ++alloc_or_die_count;
+  return new_memory;
+}
 
 inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
-  size_t size = array_size_or_die(count, element_size);
-  return realloc_or_die(memory, size);
+  return realloc_or_die(memory, array_size_or_die(count, element_size));
 }
 
 inline char *
@@ -107,14 +116,24 @@ strdup_or_die(char const *string)
 int
 asprintf_or_die(char **string, char const *format, ...);
 
-int
-vasprintf_or_die(char **string, const char *format, va_list arguments);
+inline int
+vasprintf_or_die(char **string, const char *format, va_list arguments)
+{
+  int result = vasprintf(string, format, arguments);
+  if (-1 == result) print_error_and_die();
+  ++alloc_or_die_count;
+  return result;
+}
 
 
 ////////// Allocation Counting //////////
 
-void
-free_or_die(void *memory);
+inline void
+free_or_die(void *memory)
+{
+  free(memory);
+  if (memory) --alloc_or_die_count;
+}
 
 void
 expect_alloc_count_zero_or_die(void);

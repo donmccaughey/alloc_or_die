@@ -35,13 +35,6 @@
 
 long alloc_or_die_count = 0;
 
-#define EXPECT_ALLOC_COUNT_ZERO() \
-    if (alloc_or_die_count) { \
-      char const *plural = (1 == alloc_or_die_count) ? "" : "s"; \
-      fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n", \
-              alloc_or_die_count, plural); \
-    }
-
 
 size_t
 array_size_or_die(size_t count, size_t element_size)
@@ -56,16 +49,6 @@ array_size_or_die(size_t count, size_t element_size)
 }
 
 
-void *
-realloc_or_die(void *memory, size_t size)
-{
-  void *new_memory = realloc(memory, size);
-  if ( ! new_memory) print_error_and_die();
-  if ( ! memory) ++alloc_or_die_count;
-  return new_memory;
-}
-
-
 int
 asprintf_or_die(char **string, char const *format, ...)
 {
@@ -74,33 +57,6 @@ asprintf_or_die(char **string, char const *format, ...)
   int result = vasprintf_or_die(string, format, arguments);
   va_end(arguments);
   return result;
-}
-
-
-int
-vasprintf_or_die(char **string, const char *format, va_list arguments)
-{
-  int result = vasprintf(string, format, arguments);
-  if (-1 == result) print_error_and_die();
-  ++alloc_or_die_count;
-  return result;
-}
-
-
-void *
-not_null_or_die(void *memory)
-{
-  if ( ! memory) print_error_and_die();
-  ++alloc_or_die_count;
-  return memory;
-}
-
-
-void
-free_or_die(void *memory)
-{
-  free(memory);
-  if (memory) --alloc_or_die_count;
 }
 
 
@@ -124,17 +80,29 @@ arraydup_or_die(void const *memory, size_t count, size_t element_size);
 extern inline void *
 calloc_or_die(size_t count, size_t element_size);
 
+extern inline void
+free_or_die(void *memory);
+
 extern inline void *
 malloc_or_die(size_t size);
 
 extern inline void *
 memdup_or_die(void const *memory, size_t size);
 
+extern inline void *
+not_null_or_die(void *memory);
+
 extern inline void
 print_error_and_die(void);
+
+extern inline void *
+realloc_or_die(void *memory, size_t size);
 
 extern inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
 extern inline char *
 strdup_or_die(char const *string);
+
+extern inline int
+vasprintf_or_die(char **string, const char *format, va_list arguments);
