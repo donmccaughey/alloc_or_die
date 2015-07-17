@@ -57,14 +57,7 @@ static int alloc_count = 0;
 #endif
 
 
-static size_t
-array_size_or_die(size_t count, size_t element_size);
-
-static void
-print_error_and_die(void);
-
-
-static size_t
+size_t
 array_size_or_die(size_t count, size_t element_size)
 {
   if (count >= SQRT_SIZE_MAX_PLUS_1 || element_size >= SQRT_SIZE_MAX_PLUS_1) {
@@ -77,27 +70,6 @@ array_size_or_die(size_t count, size_t element_size)
 }
 
 
-static void
-print_error_and_die(void)
-{
-  if (errno) {
-    perror(NULL);
-    exit(errno);
-  } else {
-    fprintf(stderr, "Memory allocation failure\n");
-    exit(EXIT_FAILURE);
-  }
-}
-
-
-void *
-arraydup_or_die(void const *memory, size_t count, size_t element_size)
-{
-  size_t size = array_size_or_die(count, element_size);
-  return memdup_or_die(memory, size);
-}
-
-
 void *
 realloc_or_die(void *memory, size_t size)
 {
@@ -105,14 +77,6 @@ realloc_or_die(void *memory, size_t size)
   if ( ! new_memory) print_error_and_die();
   if ( ! memory) INCREMENT_ALLOC_COUNT();
   return new_memory;
-}
-
-
-void *
-reallocarray_or_die(void *memory, size_t count, size_t element_size)
-{
-  size_t size = array_size_or_die(count, element_size);
-  return realloc_or_die(memory, size);
 }
 
 
@@ -161,6 +125,11 @@ expect_alloc_count_zero_or_die(void)
 }
 
 
+////////// extern inline declarations //////////
+
+extern inline void *
+arraydup_or_die(void const *memory, size_t count, size_t element_size);
+
 extern inline void *
 calloc_or_die(size_t count, size_t element_size);
 
@@ -169,6 +138,12 @@ malloc_or_die(size_t size);
 
 extern inline void *
 memdup_or_die(void const *memory, size_t size);
+
+extern inline void
+print_error_and_die(void);
+
+extern inline void *
+reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
 extern inline char *
 strdup_or_die(char const *string);

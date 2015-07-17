@@ -26,14 +26,37 @@
 #define ALLOC_OR_DIE_H_INCLUDED
 
 
+#include <errno.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 
-// If `memory' is NULL, exit with an error code, otherwise return `memory'.
+////////// Building Blocks //////////
+
+// Calculate the array size in bytes.  Set `errno' to EOVERFLOW and call
+// `print_error_and_die()' if the calculated array size overflows.
+size_t
+array_size_or_die(size_t count, size_t element_size);
+
+// If `memory' is NULL, call exit() with an error code, otherwise return
+// `memory'.
 void *
 not_null_or_die(void *memory);
+
+// Prints the current error message and calls `exit()' with the value of
+// `errno'.  If `errno' is zero, sets it to ENOMEM first.
+inline void
+print_error_and_die(void)
+{
+  if ( ! errno) errno = ENOMEM;
+  perror(NULL);
+  exit(errno);
+}
+
+
+////////// Allocation Wrappers //////////
 
 inline void *
 calloc_or_die(size_t count, size_t element_size)
@@ -47,9 +70,6 @@ malloc_or_die(size_t size)
   return not_null_or_die(malloc(size));
 }
 
-void *
-arraydup_or_die(void const *memory, size_t count, size_t element_size);
-
 inline void *
 memdup_or_die(void const *memory, size_t size)
 {
@@ -58,11 +78,22 @@ memdup_or_die(void const *memory, size_t size)
   return dupe;
 }
 
+inline void *
+arraydup_or_die(void const *memory, size_t count, size_t element_size)
+{
+  size_t size = array_size_or_die(count, element_size);
+  return memdup_or_die(memory, size);
+}
+
 void *
 realloc_or_die(void *memory, size_t size);
 
-void *
-reallocarray_or_die(void *memory, size_t count, size_t element_size);
+inline void *
+reallocarray_or_die(void *memory, size_t count, size_t element_size)
+{
+  size_t size = array_size_or_die(count, element_size);
+  return realloc_or_die(memory, size);
+}
 
 inline char *
 strdup_or_die(char const *string)
@@ -75,6 +106,9 @@ asprintf_or_die(char **string, char const *format, ...);
 
 int
 vasprintf_or_die(char **string, const char *format, va_list arguments);
+
+
+////////// Allocation Counting //////////
 
 void
 free_or_die(void *memory);
