@@ -40,9 +40,9 @@ Alloc_or_die also defines the following convenience functions:
       pointer and a size.
   -   `reallocarray_or_die()`: like `reallocarray()` from OpenBSD, calls 
       `realloc()` to resize an array given the count of elements and the size
-      of each element; checks the resulting memory size for overflow.
+      of each element; checks the calculated memory size for overflow.
 
-To check for memory leaks call `expect_alloc_count_zero_or_die()` before your 
+To check for memory leaks call `alloc_count_is_zero_or_die()` before your 
 program exits.
 
     #include <alloc_or_die.h>
@@ -54,13 +54,13 @@ program exits.
       // ...
       free_or_die(message);
       
-      expect_alloc_count_zero_or_die();
+      alloc_count_is_zero_or_die();
       return EXIT_SUCCESS;
     }
 
 If the count of alloc_or_die allocation calls match the count of 
-`free_or_die()` calls, `expect_alloc_count_zero_or_die()` is silent; otherwise, 
-`expect_alloc_count_zero_or_die()` prints a warning to `stderr` with the 
+`free_or_die()` calls, `alloc_count_is_zero_or_die()` is silent; otherwise, 
+`alloc_count_is_zero_or_die()` prints a warning to `stderr` with the 
 allocation count, like this:
 
     WARNING: 1 memory allocation not freed.
@@ -69,7 +69,7 @@ Note that a _negative_ allocation count usually indicates calls to
 `free_or_die()` were made for memory allocated with plain old `malloc()` or one 
 of its relatives.
 
-There's no build system yet, but Alloc_or_die consists of single header and 
+There's no build system yet, but alloc_or_die consists of single header and 
 `.c` file, so it's easy to drop into a project.
 
 
@@ -81,7 +81,7 @@ memory blocks for processing a media file), the possibility of failure is
 expected and dealing with failure is straight-forward.
 
 In most other circumstances, programs are allocating many small blocks of
-memory as part of more complex operations. A failure of one of these routine 
+memory as part of more complex operations. A failure of one of these common 
 small allocations usually indicates that the program or the system is in a bad 
 state (e.g. allocations are happening in an infinite loop or virtual memory is 
 exhausted). Recovering from this type of failure state is tricky at best and 
@@ -90,5 +90,5 @@ may not be possible.
 Writing code that is robust in the face of memory allocation failure has a real
 cost in terms of development time and code complexity, and is difficult to test 
 thoroughly. For many programs, it makes more sense to treat the failure of a 
-routine small allocation as an unrecoverable error.
+common small allocation as an unrecoverable error.
 

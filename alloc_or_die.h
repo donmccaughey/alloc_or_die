@@ -38,8 +38,9 @@ extern long alloc_or_die_count;
 
 ////////// Building Blocks //////////
 
-// Prints the current error message and calls `exit()' with the value of
-// `errno'.  If `errno' is zero, sets it to ENOMEM first.
+// Prints an error message and exit.  If `errno' is zero, it is set to ENOMEM.
+// Prints the error message for `errno' to `stderr', then exits the process
+// with `errno' as the status code.
 inline void
 print_error_and_die(void)
 {
@@ -48,8 +49,10 @@ print_error_and_die(void)
   exit(errno);
 }
 
-// If `memory' is NULL, calls exit() with an error code, otherwise increments
-// `alloc_or_die_count' and returns `memory'.
+// Checks that the `memory' pointer is not null.  If `memory' is not NULL,
+// increments `alloc_or_die_count' and returns `memory'.  If `memory' is NULL,
+// sets `errno' to ENOMEM if `errno' is zero, then prints the error message for
+// `errno' to `stderr' and exits the process with `errno' as the status code.
 inline void *
 not_null_or_die(void *memory)
 {
@@ -58,29 +61,37 @@ not_null_or_die(void *memory)
   return memory;
 }
 
-// Calculate the array size in bytes.  Set `errno' to EOVERFLOW and call
-// `print_error_and_die()' if the calculated array size overflows.
+// Calculates the size of an array, checking for overflow.  Returns the size if
+// it is less than or equal to SIZE_MAX.  If the calculated size exceeds
+// SIZE_MAX, sets `errno' to EOVERFLOW, prints the error message for `errno' to
+// `stderr' and exits the process with `errno' as the status code.
 size_t
 array_size_or_die(size_t count, size_t element_size);
 
 
 ////////// Core Allocation Wrappers //////////
 
-// Wrapper for calloc().
+// Wrapper for calloc().  Increments `alloc_or_die_count' on success.  On
+// failure, prints the error message for `errno' to `stderr' and exits the
+// process with `errno' as the status code.
 inline void *
 calloc_or_die(size_t count, size_t element_size)
 {
   return not_null_or_die(calloc(count, element_size));
 }
 
-// Wrapper for malloc().
+// Wrapper for malloc().  Increments `alloc_or_die_count' on success.  On
+// failure, prints the error message for `errno' to `stderr' and exits the
+// process with `errno' as the status code.
 inline void *
 malloc_or_die(size_t size)
 {
   return not_null_or_die(malloc(size));
 }
 
-// Wrapper for realloc().
+// Wrapper for realloc().  Increments `alloc_or_die_count' on success.  On
+// failure, prints the error message for `errno' to `stderr' and exits the
+// process with `errno' as the status code.
 inline void *
 realloc_or_die(void *memory, size_t size)
 {
@@ -90,8 +101,10 @@ realloc_or_die(void *memory, size_t size)
   return new_memory;
 }
 
-// Reallocate an array.  Set `errno' to EOVERFLOW and call
-// `print_error_and_die()' if the calculated array size overflows.
+// Reallocates an array.  Increments `alloc_or_die_count' on success.  If
+// allocation fails or the requested size exceeds SIZE_MAX, prints the error
+// message for `errno' to `stderr' and exits the process with `errno' as the
+// status code.
 inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
@@ -101,23 +114,30 @@ reallocarray_or_die(void *memory, size_t count, size_t element_size)
 
 ////////// Duplication Functions //////////
 
-// Make a copy of `size' bytes of `memory'.
+// Allocates a copy of `size' bytes of `memory'.  Increments
+// `alloc_or_die_count' and returns the copied memory on success.  On failure,
+// prints the error message for `errno' to `stderr' and exits the process with
+// `errno' as the status code.
 inline void *
 memdup_or_die(void const *memory, size_t size)
 {
-  void *dupe = malloc_or_die(size);
-  memcpy(dupe, memory, size);
-  return dupe;
+  return memcpy(malloc_or_die(size), memory, size);
 }
 
-// Duplicate `count' elements of an array.
+// Allocates a copy of `count' elements of an array.  Increments
+// `alloc_or_die_count' and returns the copied array on success.  On failure,
+// prints the error message for `errno' to `stderr' and exits the process with
+// `errno' as the status code.
 inline void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
   return memdup_or_die(memory, array_size_or_die(count, element_size));
 }
 
-// Duplicate a zero-terminated string.
+// Allocates a copy of a zero-terminated string.  Increments
+// `alloc_or_die_count' and returns the copied string on success.  On failure,
+// prints the error message for `errno' to `stderr' and exits the process with
+// `errno' as the status code.
 inline char *
 strdup_or_die(char const *string)
 {
@@ -127,11 +147,19 @@ strdup_or_die(char const *string)
 
 ////////// Formatting Functions //////////
 
-// Allocate a new formatted string.
+// Allocates a formatted string.  On success, sets `*string' contains a pointer
+// to the newly allocated, formatted string, increments `alloc_or_die_count',
+// and returns the number of characters in the formatted string (excluding the
+// terminating zero).  On failure, prints the error message for `errno' to
+// `stderr' and exits the process with `errno' as the status code.
 int
 asprintf_or_die(char **string, char const *format, ...);
 
-// Allocate a new formatted string.
+// Allocates a formatted string.  On success, sets `*string' contains a pointer
+// to the newly allocated, formatted string, increments `alloc_or_die_count',
+// and returns the number of characters in the formatted string (excluding the
+// terminating zero).  On failure, prints the error message for `errno' to
+// `stderr' and exits the process with `errno' as the status code.
 inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
@@ -144,7 +172,8 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 
 ////////// Allocation Counting //////////
 
-// Wrapper for free().
+// Wrapper for free().  Frees `memory' and decrements `alloc_or_die_count' if
+// `memory' is not NULL.
 inline void
 free_or_die(void *memory)
 {
@@ -152,7 +181,9 @@ free_or_die(void *memory)
   if (memory) --alloc_or_die_count;
 }
 
-// Check that `alloc_or_die_count' is zero or call exit() with EXIT_FAILURE.
+// Checks that `alloc_or_die_count' is zero.  If it is zero, does nothing.  If
+// it is not zero, prints a message to `stderr' and calls exit() with
+// EXIT_FAILURE as the status code.
 void
 alloc_count_is_zero_or_die(void);
 
