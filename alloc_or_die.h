@@ -44,9 +44,9 @@ extern long alloc_or_die_count;
 inline void
 print_error_and_die(void)
 {
-  if ( ! errno) errno = ENOMEM;
-  perror(NULL);
-  exit(errno);
+    if ( ! errno) errno = ENOMEM;
+    perror(NULL);
+    exit(errno);
 }
 
 // Checks that the `memory' pointer is not null.  If `memory' is not NULL,
@@ -56,9 +56,9 @@ print_error_and_die(void)
 inline void *
 not_null_or_die(void *memory)
 {
-  if ( ! memory) print_error_and_die();
-  ++alloc_or_die_count;
-  return memory;
+    if ( ! memory) print_error_and_die();
+    ++alloc_or_die_count;
+    return memory;
 }
 
 // Calculates the size of an array, checking for overflow.  Returns the size if
@@ -77,7 +77,7 @@ array_size_or_die(size_t count, size_t element_size);
 inline void *
 calloc_or_die(size_t count, size_t element_size)
 {
-  return not_null_or_die(calloc(count, element_size));
+    return not_null_or_die(calloc(count, element_size));
 }
 
 // Wrapper for malloc().  Increments `alloc_or_die_count' on success.  On
@@ -86,7 +86,7 @@ calloc_or_die(size_t count, size_t element_size)
 inline void *
 malloc_or_die(size_t size)
 {
-  return not_null_or_die(malloc(size));
+    return not_null_or_die(malloc(size));
 }
 
 // Wrapper for realloc().  Increments `alloc_or_die_count' on success.  On
@@ -95,10 +95,10 @@ malloc_or_die(size_t size)
 inline void *
 realloc_or_die(void *memory, size_t size)
 {
-  void *new_memory = realloc(memory, size);
-  if ( ! new_memory) print_error_and_die();
-  if ( ! memory) ++alloc_or_die_count;
-  return new_memory;
+    void *new_memory = realloc(memory, size);
+    if ( ! new_memory) print_error_and_die();
+    if ( ! memory) ++alloc_or_die_count;
+    return new_memory;
 }
 
 // Reallocates an array.  Increments `alloc_or_die_count' on success.  If
@@ -108,7 +108,7 @@ realloc_or_die(void *memory, size_t size)
 inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size)
 {
-  return realloc_or_die(memory, array_size_or_die(count, element_size));
+    return realloc_or_die(memory, array_size_or_die(count, element_size));
 }
 
 
@@ -121,7 +121,7 @@ reallocarray_or_die(void *memory, size_t count, size_t element_size)
 inline void *
 memdup_or_die(void const *memory, size_t size)
 {
-  return memcpy(malloc_or_die(size), memory, size);
+    return memcpy(malloc_or_die(size), memory, size);
 }
 
 // Allocates a copy of `count' elements of an array.  Increments
@@ -131,7 +131,7 @@ memdup_or_die(void const *memory, size_t size)
 inline void *
 arraydup_or_die(void const *memory, size_t count, size_t element_size)
 {
-  return memdup_or_die(memory, array_size_or_die(count, element_size));
+    return memdup_or_die(memory, array_size_or_die(count, element_size));
 }
 
 // Allocates a copy of a zero-terminated string.  Increments
@@ -141,7 +141,7 @@ arraydup_or_die(void const *memory, size_t count, size_t element_size)
 inline char *
 strdup_or_die(char const *string)
 {
-  return not_null_or_die(strdup(string));
+    return not_null_or_die(strdup(string));
 }
 
 
@@ -163,10 +163,10 @@ asprintf_or_die(char **string, char const *format, ...);
 inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
-  int result = vasprintf(string, format, arguments);
-  if (-1 == result) print_error_and_die();
-  ++alloc_or_die_count;
-  return result;
+    int result = vasprintf(string, format, arguments);
+    if (-1 == result) print_error_and_die();
+    ++alloc_or_die_count;
+    return result;
 }
 
 
@@ -177,8 +177,8 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 inline void
 free_or_die(void *memory)
 {
-  free(memory);
-  if (memory) --alloc_or_die_count;
+    free(memory);
+    if (memory) --alloc_or_die_count;
 }
 
 // Checks that `alloc_or_die_count' is zero.  If it is zero, does nothing.  If

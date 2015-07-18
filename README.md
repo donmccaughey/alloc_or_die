@@ -5,8 +5,8 @@ Fail-fast wrappers around C memory allocation functions for C99.
 
 Alloc_or_die performs two functions:
 
-  1.  It checks for memory allocation failure and exits if allocation fails.
-  2.  It keeps a tally of memory allocations and warns about leaks.
+    1. It checks for memory allocation failure and exits if allocation fails.
+    2. It keeps a tally of memory allocations and warns about leaks.
 
 
 License
@@ -24,21 +24,21 @@ names and signatures, suffixed with `_or_die`.
 
 Alloc_or_die has wrappers for the following standard functions:
 
-  -   `calloc()`
-  -   `malloc()`
-  -   `realloc()`
-  -   `strdup()`
-  -   `asprintf()`
-  -   `vasprintf()`
-  -   `free()`
+    - `calloc()`
+    - `malloc()`
+    - `realloc()`
+    - `strdup()`
+    - `asprintf()`
+    - `vasprintf()`
+    - `free()`
   
 Alloc_or_die also defines the following convenience functions:
 
-  -   `arraydup_or_die()`: like `strdup()`, makes a copy of an array when you 
+    - `arraydup_or_die()`: like `strdup()`, makes a copy of an array when you 
       know the count of elements and the size of each element.
-  -   `memdup_or_die()`: like `strdup()`, makes a copy of memory given a 
+    - `memdup_or_die()`: like `strdup()`, makes a copy of memory given a 
       pointer and a size.
-  -   `reallocarray_or_die()`: like `reallocarray()` from OpenBSD, calls 
+    - `reallocarray_or_die()`: like `reallocarray()` from OpenBSD, calls 
       `realloc()` to resize an array given the count of elements and the size
       of each element; checks the calculated memory size for overflow.
 
@@ -50,12 +50,12 @@ program exits.
     int
     main(int argc, char *argv[])
     {
-      char *message = strdup_or_die("Hello world!");
-      // ...
-      free_or_die(message);
-      
-      alloc_count_is_zero_or_die();
-      return EXIT_SUCCESS;
+        char *message = strdup_or_die("Hello world!");
+        // ...
+        free_or_die(message);
+
+        alloc_count_is_zero_or_die();
+        return EXIT_SUCCESS;
     }
 
 If the count of alloc_or_die allocation calls match the count of 

@@ -36,37 +36,37 @@ long alloc_or_die_count = 0;
 void
 alloc_count_is_zero_or_die(void)
 {
-  if (alloc_or_die_count) {
-    char const *plural = (1 == alloc_or_die_count) ? "" : "s";
-    fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n",
-            alloc_or_die_count, plural);
-    exit(EXIT_FAILURE);
-  }
+    if (alloc_or_die_count) {
+        char const *plural = (1 == alloc_or_die_count) ? "" : "s";
+        fprintf(stderr, "WARNING: %li memory allocation%s not freed.\n",
+                alloc_or_die_count, plural);
+        exit(EXIT_FAILURE);
+    }
 }
 
 
 size_t
 array_size_or_die(size_t count, size_t element_size)
 {
-  static size_t const sqrt_size_max_plus_1 = 1UL << (sizeof(size_t) * 4);
-  if (count >= sqrt_size_max_plus_1 || element_size >= sqrt_size_max_plus_1) {
-    if (element_size && count > SIZE_MAX / element_size) {
-      errno = EOVERFLOW;
-      print_error_and_die();
+    static size_t const sqrt_size_max_plus_1 = 1UL << (sizeof(size_t) * 4);
+    if (count >= sqrt_size_max_plus_1 || element_size >= sqrt_size_max_plus_1) {
+        if (element_size && count > SIZE_MAX / element_size) {
+            errno = EOVERFLOW;
+            print_error_and_die();
+        }
     }
-  }
-  return count * element_size;
+    return count * element_size;
 }
 
 
 int
 asprintf_or_die(char **string, char const *format, ...)
 {
-  va_list arguments;
-  va_start(arguments, format);
-  int result = vasprintf_or_die(string, format, arguments);
-  va_end(arguments);
-  return result;
+    va_list arguments;
+    va_start(arguments, format);
+    int result = vasprintf_or_die(string, format, arguments);
+    va_end(arguments);
+    return result;
 }
 
 
