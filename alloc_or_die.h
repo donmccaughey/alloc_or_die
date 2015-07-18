@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 
 extern long alloc_or_die_count;
@@ -167,6 +168,19 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
     if (-1 == result) print_error_and_die();
     ++alloc_or_die_count;
     return result;
+}
+
+
+////////// Miscellaneous Functions //////////
+
+// Allocates a zero-terminated string containing the absolute pathname of the
+// current working directory.  Increments `alloc_or_die_count' and returns the
+// string on success.  On failure, prints the error message for `errno' to
+// `stderr' and exits the process with `errno' as the status code.
+inline char *
+getcwd_or_die(void)
+{
+    return not_null_or_die(getcwd(NULL, 0));
 }
 
 
