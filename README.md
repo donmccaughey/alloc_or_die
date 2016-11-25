@@ -30,6 +30,7 @@ Alloc_or_die has wrappers for the following standard functions:
 - `strdup()`
 - `asprintf()`
 - `vasprintf()`
+- `getcwd()`
 - `free()`
   
 Alloc_or_die also defines the following convenience functions:
