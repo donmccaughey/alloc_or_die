@@ -1,3 +1,10 @@
+__*** Archived *** Archived *** Archived ***__
+
+I've rebuilt this library from the ground up and renamed it to `xmalloc`.
+Please find it at https://git.sr.ht/~donmcc/xmalloc.
+
+__*** Archived *** Archived *** Archived ***__
+
 alloc_or_die
 ============
 
